@@ -17,18 +17,20 @@ public class CustomerRestController {
 
 	@Autowired
 	private CustomerService customerService;
-	
+
 	@GetMapping("/customers")
-	public List<Customer> getCustomers(){
-		
+	public List<Customer> getCustomers() {
+
 		return customerService.getCustomers();
 	}
-	
-	
+
 	@GetMapping("/customers/{customerId}")
 	public Customer getCustomers(@PathVariable int customerId) {
-		
+
 		Customer theCustomer = customerService.getCustomer(customerId);
+		if (theCustomer == null) {
+			throw new CustomerNotFoundException("Customer Id not found - " + customerId);
+		}
 		return theCustomer;
 	}
 }
